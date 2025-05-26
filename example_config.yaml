@@ -1,0 +1,109 @@
+"""
+Example configuration file for the RAG evaluation framework.
+
+This YAML file demonstrates how to configure different pipeline strategies.
+"""
+default:
+  parser:
+    type: unstructured
+  chunker:
+    type: recursive
+    chunk_size: 1000
+    chunk_overlap: 200
+  embedder:
+    type: sentence_transformer
+    model_name: all-MiniLM-L6-v2
+  retriever:
+    type: dense
+    similarity_metric: cosine
+    top_k: 5
+  reranker:
+    type: cross_encoder
+    model_name: cross-encoder/ms-marco-MiniLM-L-6-v2
+    top_k: 3
+  llm:
+    type: openai
+    model_name: gpt-4o
+    temperature: 0.7
+
+simple:
+  parser:
+    type: unstructured
+  chunker:
+    type: sentence
+    chunk_size: 1000
+    chunk_overlap: 0
+  embedder:
+    type: sentence_transformer
+    model_name: all-MiniLM-L6-v2
+  retriever:
+    type: dense
+    similarity_metric: cosine
+    top_k: 3
+  llm:
+    type: openai
+    model_name: gpt-4o
+    temperature: 0.7
+
+bm25:
+  parser:
+    type: unstructured
+  chunker:
+    type: recursive
+    chunk_size: 1000
+    chunk_overlap: 200
+  retriever:
+    type: bm25
+    top_k: 5
+  llm:
+    type: openai
+    model_name: gpt-4o
+    temperature: 0.7
+
+advanced:
+  parser:
+    type: unstructured
+  chunker:
+    type: semantic
+    chunk_size: 1000
+    chunk_overlap: 200
+  embedder:
+    type: openai
+    model_name: text-embedding-3-small
+  retriever:
+    type: hyde
+    similarity_metric: cosine
+    top_k: 5
+    llm:
+      type: openai
+      model_name: gpt-4o
+      temperature: 0.0
+  reranker:
+    type: llm
+    top_k: 3
+    llm:
+      type: openai
+      model_name: gpt-4o
+      temperature: 0.0
+  llm:
+    type: openai
+    model_name: gpt-4o
+    temperature: 0.7
+
+local:
+  parser:
+    type: unstructured
+  chunker:
+    type: recursive
+    chunk_size: 1000
+    chunk_overlap: 200
+  embedder:
+    type: sentence_transformer
+    model_name: all-MiniLM-L6-v2
+  retriever:
+    type: bm25
+    top_k: 5
+  llm:
+    type: llama
+    model_path: /path/to/llama/model.gguf
+    temperature: 0.7
